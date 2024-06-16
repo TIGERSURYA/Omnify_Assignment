@@ -4,7 +4,7 @@ import { useContext, createContext, useState, ReactNode } from "react"
 
 const initvalue = {
   expanded : true,
-  setExpanded : () => {},
+  toggleExpandHandler : () => {},
 };
 
 const SidebarContext = createContext(initvalue);
@@ -14,7 +14,10 @@ interface Props {
 }
 // Retracable Sidebar
 export default function Sidebar({ children } : Props) {
-  const [expanded, setExpanded] = useState(true)
+  const [expanded, setExpanded] = useState<boolean>(true)
+  const toggleExpandHandler = () => {
+    setExpanded((curr) => !curr);
+  }
   
   return (
     <aside className={`h-screen flex flex-col ${expanded ? "w-52 ml-3" : "w-20"}`}>
@@ -36,7 +39,7 @@ export default function Sidebar({ children } : Props) {
           </button>
         </div>
 
-        <SidebarContext.Provider value={{ expanded, setExpanded }}>
+        <SidebarContext.Provider value={{ expanded, toggleExpandHandler }}>
           <ul className="flex-1 px-3 ">{children}</ul>
         </SidebarContext.Provider>
 
@@ -65,7 +68,7 @@ export default function Sidebar({ children } : Props) {
   )
 }
 
-export function SidebarItem({ icon, text, active, alert }) {
+export function SidebarItem({ icon, text, active, alert }:any) {
   const { expanded } = useContext(SidebarContext)
   
   return (
